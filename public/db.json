@@ -1,0 +1,30 @@
+{
+    "videos": [
+      {
+        "id": "1",
+        "title": "First Video",
+        "description": "This is the description of the first video.",
+        "url": "/videos/maures poutses.mkv",
+        "thumbnail": "/images/first_video_thumbnail.jpg",
+        "views": 150,
+        "likes": 10,
+        "comments": [
+          {
+            "username": "JohnDoe",
+            "comment": "Great video!"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "title": "Second Video",
+        "description": "This is the description of the second video.",
+        "url": "/videos/public/videos/2024-03-06 17-20-58.mkv",
+        "thumbnail": "/videos/public/videos/2024-03-06 17-20-58.mkv",
+        "views": 200,
+        "likes": 25,
+        "comments": []
+      }
+    ]
+  }
+  
