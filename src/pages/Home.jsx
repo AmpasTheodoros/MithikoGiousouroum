@@ -1,28 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Adjust this import path to where your firebase config and initialization is
 
 function Home() {
   const [videos, setVideos] = useState([]);
 
-
   useEffect(() => {
-    fetch('/db.json') // Adjust the path if your db.json is located elsewhere
-      .then(response => response.json())
-      .then(data => setVideos(data.videos)); // Make sure 'videos' matches the key in your db.json
+    // Create an async function that fetches the videos
+    const fetchVideos = async () => {
+      // Reference the collection where videos are stored
+      const videosCol = collection(db, "videos");
+      // Get the snapshot of the collection
+      const videoSnapshot = await getDocs(videosCol);
+      // Map through the documents and setVideos
+      const videoList = videoSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setVideos(videoList);
+    };
+
+    fetchVideos().catch(console.error); // Fetch videos when component mounts
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {videos.map(video => (
-        <div key={video.id} style={{ marginBottom: '20px', width: '60%' }}>
-          <video width="100%" controls>
-            <source src={video.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <h3>{video.title}</h3>
-          <p>{video.description}</p>
-          {/* You can add more video details like views, likes, etc. here */}
-        </div>
-      ))}
+    <div>
+      {videos.length > 0 ? (
+        videos.map((video) => (
+          <div key={video.id} style={{ marginBottom: '20px' }}>
+            <video width="100%" controls>
+              <source src={video.videoUrl} type="video/mp4" />
+              Sorry, your browser doesn't support embedded videos.
+            </video>
+            <h3>{video.title}</h3>
+            <p>{video.description}</p>
+          </div>
+        ))
+      ) : (
+        <p>No videos to display</p>
+      )}
     </div>
   );
 }
